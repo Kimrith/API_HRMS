@@ -23,7 +23,6 @@ namespace HRMS.API.Controllers
             _createCommand = createCommand;
         }
 
-
         // POST: api/auth/register
         [HttpPost("register")]
         public async Task<ActionResult<AuthResponseDto>> Register([FromForm] RegisterUserDto dto)
