@@ -3,11 +3,7 @@ using HRMS.API.Commands.Delete;
 using HRMS.API.Commands.Update;
 using HRMS.API.Data;
 using HRMS.API.Queries;
-<<<<<<< HEAD
 using HRMS.API.Services;
-=======
-using HRMS.API.Services; // Ensure this matches your namespace
->>>>>>> b188cd6c810347395ab21e6003021a274a406673
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -40,6 +36,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 // --- 3. Register your CQRS classes ---
 // Users

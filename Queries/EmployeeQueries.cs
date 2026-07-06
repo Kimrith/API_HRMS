@@ -26,6 +26,7 @@ namespace HRMS.API.Queries
                     LastName = e.LastName,
                     // Convert Enum to string for the DTO
                     Level = e.Level.ToString(),
+                    Department = e.Department,
                     DateOfBirth = e.DateOfBirth,
                     DateStartedWorking = e.DateStartedWorking,
                     PhoneNumber = e.PhoneNumber,
@@ -47,6 +48,7 @@ namespace HRMS.API.Queries
                     FirstName = e.FirstName,
                     LastName = e.LastName,
                     Level = e.Level.ToString(),
+                    Department = e.Department,
                     DateOfBirth = e.DateOfBirth,
                     DateStartedWorking = e.DateStartedWorking,
                     PhoneNumber = e.PhoneNumber,

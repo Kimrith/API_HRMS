@@ -20,12 +20,15 @@ namespace HRMS.API.Models
         public string LastName { get; set; } = string.Empty;
         
         public JobLevel Level { get; set; } = JobLevel.Junior;
+
+        [StringLength(100)]
+        public string Department { get; set; } = string.Empty;
         
         public DateTime DateOfBirth { get; set; }
         public DateTime DateStartedWorking { get; set; }
         
         [Phone]
-        public string PhoneNumber { get; set; } = string.Empty;
+        public long PhoneNumber { get; set; }
         
         [Column(TypeName = "decimal(18,2)")] // Essential for SQL money types
         public decimal BasicSalary { get; set; }

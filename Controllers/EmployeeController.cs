@@ -46,9 +46,10 @@ namespace HRMS.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] CreateEmployeeDto dto)
         {
-            // Ensure this matches the parameters expected by your CreateEmployeeCommand.ExecuteAsync method
-            await _createCommand.ExecuteAsync(dto.UserId, dto.FirstName, dto.LastName);
-            return Ok(new { message = "Employee created successfully." });
+            // Pass the entire DTO to match the updated method signature
+            var newId = await _createCommand.ExecuteAsync(dto);
+            
+            return Ok(new { message = "Employee created successfully.", id = newId });
         }
 
         [HttpPut("{id}")]

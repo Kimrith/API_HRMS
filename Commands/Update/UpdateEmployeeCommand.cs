@@ -17,9 +17,22 @@ namespace HRMS.API.Commands.Update
             if (profile == null) return false;
 
             // Update fields only if they are provided in the DTO
-            if (!string.IsNullOrWhiteSpace(dto.FirstName)) profile.FirstName = dto.FirstName;
-            if (!string.IsNullOrWhiteSpace(dto.LastName)) profile.LastName = dto.LastName;
-            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber)) profile.PhoneNumber = dto.PhoneNumber;
+            if (!string.IsNullOrWhiteSpace(dto.FirstName)) {
+                profile.FirstName = dto.FirstName;
+            }
+
+            if (!string.IsNullOrWhiteSpace(dto.LastName)){
+                profile.LastName = dto.LastName;
+            } 
+
+            if (dto.PhoneNumber.HasValue) {
+                profile.PhoneNumber = dto.PhoneNumber.Value;
+            } 
+
+            // Inside UpdateEmployeeCommand.cs
+            if (!string.IsNullOrWhiteSpace(dto.Department)) {
+                profile.Department = dto.Department; 
+            } 
             
             // Handle Enum parsing for JobLevel
             if (!string.IsNullOrWhiteSpace(dto.Level))

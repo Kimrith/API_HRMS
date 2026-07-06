@@ -1,5 +1,6 @@
 using HRMS.API.Data;
 using HRMS.API.Models;
+using HRMS.API.DTOs;
 
 namespace HRMS.API.Commands.Create
 {
@@ -9,18 +10,19 @@ namespace HRMS.API.Commands.Create
 
         public CreateEmployeeCommand(AppDbContext context) => _context = context;
 
-        public async Task<int> ExecuteAsync(int userId, string firstName, string lastName)
+        // Accepting the DTO here fixes the scope error
+        public async Task<int> ExecuteAsync(CreateEmployeeDto dto)
         {
-            // Create a default profile linked to the newly created User ID
             var profile = new EmployeeProfile
             {
-                UserId = userId,
-                FirstName = firstName,
-                LastName = lastName,
-                Level = JobLevel.Junior, // Default value
-                DateOfBirth = DateTime.UtcNow.AddYears(-20), // Placeholder
+                UserId = dto.UserId,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Department = dto.Department, // Now correctly pulling from the DTO
+                Level = JobLevel.Junior,
+                DateOfBirth = DateTime.UtcNow.AddYears(-20), 
                 DateStartedWorking = DateTime.UtcNow,
-                PhoneNumber = string.Empty,
+                PhoneNumber = dto.PhoneNumber,
                 BasicSalary = 0,
                 ActiveBonus = 0,
                 UnpaidAbsenceDaysYtd = 0
