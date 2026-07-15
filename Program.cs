@@ -52,6 +52,18 @@ builder.Services.AddScoped<CreateEmployeeCommand>();
 builder.Services.AddScoped<UpdateEmployeeCommand>();
 builder.Services.AddScoped<DeleteEmployeeCommand>();
 
+// Attendance
+builder.Services.AddScoped<AttendanceLogQueries>();
+builder.Services.AddScoped<CreateAttendanceLogCommand>();
+builder.Services.AddScoped<UpdateAttendanceLogCommand>();
+builder.Services.AddScoped<DeleteAttendanceLogCommand>();
+
+// Payslip
+builder.Services.AddScoped<PayslipQueries>();
+builder.Services.AddScoped<CreatePayslipCommand>();
+builder.Services.AddScoped<UpdatePayslipCommand>();
+builder.Services.AddScoped<DeletePayslipCommand>();
+
 var app = builder.Build();
 
 // --- 4. Pipeline (Middleware) ---

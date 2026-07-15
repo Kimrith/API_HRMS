@@ -26,6 +26,8 @@ namespace HRMS.API.DTOs
         public string LastName { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
         public long PhoneNumber { get; set; }
+        public decimal? BasicSalary { get; set; }
+        public string? Level { get; set; }
     }
 
     public class UpdateEmployeeProfileDto
