@@ -7,7 +7,7 @@ namespace HRMS.API.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<User> User {get; set;}
+        public DbSet<User> Users {get; set;}
         public DbSet<EmployeeProfile> EmployeeProfile { get; set; } // Change to singular
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<AttendanceLog> AttendanceLogs { get; set; }

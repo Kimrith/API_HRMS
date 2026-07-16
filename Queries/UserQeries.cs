@@ -8,24 +8,23 @@ namespace HRMS.API.Queries
     {
         private readonly AppDbContext _context;
 
-        public UserQueries(AppDbContext context)
-        {
-            _context = context;
-        }
+        public UserQueries(AppDbContext context) => _context = context;
 
         // Fetch a user by ID and map to UserResponseDto
         public async Task<UserResponseDto?> GetUserByIdAsync(int id)
         {
-            return await _context.User
+            return await _context.Users // Using pluralized 'Users'
                 .Where(u => u.Id == id)
                 .Select(u => new UserResponseDto
                 {
                     Id = u.Id,
                     Username = u.Username,
                     Email = u.Email,
-                    // Convert Enum to string
-                    Role = u.Role.ToString(),
-                    Status = u.Status.ToString(),
+                    Role = u.Role,           // Assign Enum directly
+                    Status = u.Status,       // Assign Enum directly
+                    Gender = u.Gender,       // Added missing fields
+                    Nationality = u.Nationality,
+                    DateOfBirth = u.DateOfBirth,
                     CreatedAt = u.CreatedAt
                 })
                 .FirstOrDefaultAsync();
@@ -34,15 +33,17 @@ namespace HRMS.API.Queries
         // Fetch all users
         public async Task<List<UserResponseDto>> GetAllUsersAsync()
         {
-            return await _context.User
+            return await _context.Users
                 .Select(u => new UserResponseDto
                 {
                     Id = u.Id,
                     Username = u.Username,
                     Email = u.Email,
-                    // Convert Enum to string
-                    Role = u.Role.ToString(),
-                    Status = u.Status.ToString(),
+                    Role = u.Role,           // Assign Enum directly
+                    Status = u.Status,       // Assign Enum directly
+                    Gender = u.Gender,       // Added missing fields
+                    Nationality = u.Nationality,
+                    DateOfBirth = u.DateOfBirth,
                     CreatedAt = u.CreatedAt
                 })
                 .ToListAsync();

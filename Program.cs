@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HRMS.API.Commands.Create;
 using HRMS.API.Commands.Delete;
 using HRMS.API.Commands.Update;
@@ -33,7 +34,17 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // This converts ALL Enums to strings (e.g., "Rejected")
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        
+        // Optional: If you want to keep properties camelCase (e.g., "isActive" instead of "IsActive")
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+
+// builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -63,6 +74,10 @@ builder.Services.AddScoped<PayslipQueries>();
 builder.Services.AddScoped<CreatePayslipCommand>();
 builder.Services.AddScoped<UpdatePayslipCommand>();
 builder.Services.AddScoped<DeletePayslipCommand>();
+
+
+// google cloude storage services
+// builder.Services.AddSingleton<HRMS.API.Services.GcsService>();
 
 var app = builder.Build();
 

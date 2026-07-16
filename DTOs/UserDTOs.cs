@@ -1,17 +1,47 @@
 using System.ComponentModel.DataAnnotations;
+using HRMS.API.Models; // Assuming your Enums are here
 
 namespace HRMS.API.DTOs
 {
-        public class RegisterUserDto
-        {
-            public IFormFile? ProfileImage { get; set; }
-            [Required, StringLength(50)] public string Username { get; set; } = string.Empty;
-            [Required, EmailAddress] public string Email { get; set; } = string.Empty;
-            [Required, MinLength(8)] public string Password { get; set; } = string.Empty;
-            public string Role { get; set; } = "Employee"; // Validated in Controller
-        }
+    public class RegisterUserDto
+    {
+        public IFormFile? ProfileImage { get; set; }
+        
+        [Required, StringLength(50)] 
+        public string Username { get; set; } = string.Empty;
+        
+        [Required, EmailAddress] 
+        public string Email { get; set; } = string.Empty;
+        
+        [Required, MinLength(8)] 
+        public string Password { get; set; } = string.Empty;
 
-    // Used when a user logs in (Input)
+        // Use the actual Enum here for type safety
+        public UserRole Role { get; set; } = UserRole.Employee;
+        
+        // Add fields that you updated in your model
+        public Gender Gender { get; set; } = Gender.NotSpecified;
+        public DateTime? DateOfBirth { get; set; }
+        public string Nationality { get; set; } = string.Empty;
+    }
+
+    // --- Add this class inside your DTOs.cs file ---
+    public class UpdateUserDto
+    {
+        [Required, StringLength(50)]
+        public string Username { get; set; } = string.Empty;
+
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        public UserRole Role { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        
+        [StringLength(100)]
+        public string Nationality { get; set; } = string.Empty;
+    }
+
     public class LoginUserDto
     {
         [Required]
@@ -26,17 +56,26 @@ namespace HRMS.API.DTOs
         public int UserId { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty;
+        
+        // Return the Enum; if you used [JsonConverter] in the model,
+        // this will automatically show as a string in the API response.
+        public UserRole Role { get; set; }
     }
 
-    // Used to send User data to the frontend (Output)
     public class UserResponseDto
     {
         public int Id { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        
+        // Strongly typed for consistency
+        public UserRole Role { get; set; }
+        public UserStatus Status { get; set; }
+        
+        public string? ProfileImg { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Nationality { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
 }

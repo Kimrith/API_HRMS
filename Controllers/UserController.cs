@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HRMS.API.Controllers
 {
-    // [Authorize] 
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -24,24 +23,26 @@ namespace HRMS.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserResponseDto>>> GetUsers() => Ok(await _queries.GetAllUsersAsync());
+        public async Task<ActionResult<List<UserResponseDto>>> GetUsers() 
+            => Ok(await _queries.GetAllUsersAsync());
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id) 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<UserResponseDto>> GetById([FromRoute] int id) 
         {
             var user = await _queries.GetUserByIdAsync(id);
-            return user == null ? NotFound() : Ok(user);
+            return user == null ? NotFound(new { message = "User not found" }) : Ok(user);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, RegisterUserDto dto) 
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserDto dto) // Change Register to Update
         {
-            return await _updateCommand.ExecuteAsync(id, dto) ? NoContent() : NotFound();
+            var success = await _updateCommand.ExecuteAsync(id, dto);
+            return success ? NoContent() : NotFound(new { message = "User not found" });
         }
 
-        // [Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id) 
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id) 
         {
             return await _deleteCommand.ExecuteAsync(id) ? NoContent() : NotFound();
         }

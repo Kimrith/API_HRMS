@@ -1,6 +1,6 @@
 using HRMS.API.Data;
 using HRMS.API.DTOs;
-using HRMS.API.Models; // Ensure this is included
+using HRMS.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HRMS.API.Commands.Update
@@ -8,29 +8,32 @@ namespace HRMS.API.Commands.Update
     public class UpdateUserCommand
     {
         private readonly AppDbContext _context;
+
         public UpdateUserCommand(AppDbContext context) => _context = context;
 
-        public async Task<bool> ExecuteAsync(int id, RegisterUserDto dto)
+        // I updated this signature from RegisterUserDto to UpdateUserDto
+        public async Task<bool> ExecuteAsync(int id, UpdateUserDto dto)
         {
-            var user = await _context.User.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
             if (user == null) return false;
 
+            // Update basic fields
             user.Username = dto.Username;
             user.Email = dto.Email;
+            user.Role = dto.Role;
+            user.Gender = dto.Gender;
+            user.DateOfBirth = dto.DateOfBirth;
+            user.Nationality = dto.Nationality;
             
-            // Fix: Parse the string from the DTO into your Enum
-            if (Enum.TryParse<UserRole>(dto.Role, true, out var roleEnum))
+            try 
             {
-                user.Role = roleEnum;
+                await _context.SaveChangesAsync();
+                return true;
             }
-            else
+            catch (DbUpdateConcurrencyException)
             {
-                // Optional: Throw an exception or handle invalid role input
-                throw new ArgumentException($"Invalid role provided: {dto.Role}");
+                return false;
             }
-
-            await _context.SaveChangesAsync();
-            return true;
         }
     }
 }
